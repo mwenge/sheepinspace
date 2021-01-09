@@ -59,8 +59,8 @@ a44 = $44
 a45 = $45
 a46 = $46
 a47 = $47
-a48 = $48
-a49 = $49
+screenRAMPtrLo = $48
+screenRAMPtrHi = $49
 a4A = $4A
 a4B = $4B
 a4C = $4C
@@ -106,7 +106,6 @@ p13 = $13
 p15 = $15
 p17 = $17
 p25 = $25
-p48 = $48
 p70 = $70
 pE9 = $E9
 pF2 = $F2
@@ -176,7 +175,7 @@ aDBBE = $DBBE
 ;
 p20 = $0020
 p0300 = $0300
-p0400 = $0400
+SCREEN_RAM = $0400
 p0401 = $0401
 p0523 = $0523
 p0622 = $0622
@@ -1034,13 +1033,13 @@ b778D   LDA a06
         JMP j77CE
 
 b7796   LDA #<p7702
-        STA a48
+        STA screenRAMPtrLo
         LDA #>p7702
-        STA a49
+        STA screenRAMPtrHi
         LDA #$04
         STA aF1
 b77A2   LDY #$03
-b77A4   LDA (p48),Y
+b77A4   LDA (screenRAMPtrLo),Y
         TAX 
         TYA 
         PHA 
@@ -1048,18 +1047,18 @@ b77A4   LDA (p48),Y
         ADC #$20
         TAY 
         TXA 
-        STA (p48),Y
+        STA (screenRAMPtrLo),Y
         PLA 
         TAY 
         INY 
         CPY #$20
         BNE b77A4
         LDY #$20
-b77B9   DEC a48
-        LDA a48
+b77B9   DEC screenRAMPtrLo
+        LDA screenRAMPtrLo
         CMP #$FF
         BNE b77C3
-        DEC a49
+        DEC screenRAMPtrHi
 b77C3   DEY 
         BNE b77B9
         DEC aF1
@@ -1852,25 +1851,25 @@ s7F10   LDA #$01
         CMP $3038
         LDA #$7F
         STA $DC0D    ;CIA1: CIA Interrupt Control Register
-        JMP j821C
+        JMP InitializeGame
 
 
-s8011   LDA #>p0400
-        STA a49
-        LDA #<p0400
-        STA a48
+s8011   LDA #>SCREEN_RAM
+        STA screenRAMPtrHi
+        LDA #<SCREEN_RAM
+        STA screenRAMPtrLo
         LDX #$00
-b801B   LDA a48
+b801B   LDA screenRAMPtrLo
         STA f0340,X
-        LDA a49
+        LDA screenRAMPtrHi
         STA f0360,X
-        LDA a48
+        LDA screenRAMPtrLo
         CLC 
         ADC #$28
-        STA a48
-        LDA a49
+        STA screenRAMPtrLo
+        LDA screenRAMPtrHi
         ADC #$00
-        STA a49
+        STA screenRAMPtrHi
         INX 
         CPX #$1B
         BNE b801B
@@ -1879,13 +1878,13 @@ b801B   LDA a48
 s8038   LDX a59
         LDY a58
         LDA f0340,X
-        STA a48
+        STA screenRAMPtrLo
         LDA f0360,X
-        STA a49
+        STA screenRAMPtrHi
         RTS 
 
 s8047   JSR s8038
-        LDA (p48),Y
+        LDA (screenRAMPtrLo),Y
 b804C   RTS 
 
 s804D   LDA a58
@@ -1897,13 +1896,13 @@ s804D   LDA a58
         PHA 
         JSR s8038
         LDA a5A
-        STA (p48),Y
-        LDA a49
+        STA (screenRAMPtrLo),Y
+        LDA screenRAMPtrHi
         CLC 
         ADC #$D4
-        STA a49
+        STA screenRAMPtrHi
         LDA a5B
-        STA (p48),Y
+        STA (screenRAMPtrLo),Y
         PLA 
         TAY 
         PLA 
@@ -1912,7 +1911,7 @@ s804D   LDA a58
 
 s806E   LDX #$00
 b8070   LDA #$20
-        STA p0400,X
+        STA SCREEN_RAM,X
         STA f0500,X
         STA f0600,X
         STA f0700,X
@@ -2073,7 +2072,7 @@ f81D4   .BYTE $02,$02,$02,$02,$02,$02,$02,$03
         .BYTE $35,$38,$3B,$3F,$43,$47,$4B,$4F
 f8214   .BYTE $54,$01,$07,$03,$05,$04,$06,$00
 
-j821C
+InitializeGame
         JSR s8011
         LDA #$00
         STA a57
@@ -2082,7 +2081,7 @@ j821C
         JSR s806E
         LDA #$18
         STA $D018    ;VIC Memory Control Register
-        JSR s9216
+        JSR WriteTitleScreenChyrons
 j8234   JSR s8082
         JSR s7C5B
         JSR s7C23
@@ -2107,7 +2106,7 @@ j8234   JSR s8082
         STA a60
         JSR s866C
         JSR s8082
-        JSR s9216
+        JSR WriteTitleScreenChyrons
 j8278   JSR s7487
         LDA #$0A
         STA a59
@@ -4023,7 +4022,8 @@ b920E   JSR s8FEE
         BNE b920E
         RTS 
 
-s9216   LDA #$01
+WriteTitleScreenChyrons
+        LDA #$01
         STA a5B
         LDA #$00
         STA a58
