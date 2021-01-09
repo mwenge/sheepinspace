@@ -3,6 +3,7 @@
 
 This is the disassembled and [commented source code] for the 1984 Commodore 64 game Sheep in Space by Jeff Minter. 
 
+A version of the game you can [play in your browser can be found here]. (Use the arrow keys and `ctrl` to manipulate the display, or use a gamepad if you have one plugged in. See the manual below for more.)
 
 ## Requirements
 
@@ -13,6 +14,7 @@ This is the disassembled and [commented source code] for the 1984 Commodore 64 g
 [vice]: http://vice-emu.sourceforge.net/
 [https://sheepinspace.xyz]: https://mwenge.github.io/sheepinspace.xyz
 [commented source code]:https://github.com/mwenge/sheepinspace/blob/master/src/sheepinspace.asm
+[play in your browser can be found here]: https://mwenge.github.io/sheepinspace
 
 To compile and run it do:
 
