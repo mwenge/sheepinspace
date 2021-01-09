@@ -27,3 +27,7 @@ To just compile the game and get a binary (`sheepinspace.prg`) do:
 $ make sheepinspace
 ```
 
+## Original Manual
+
+![1](https://www.mobygames.com/images/covers/l/672849-sheep-in-space-commodore-64-manual.jpg)
+![2](https://www.mobygames.com/images/covers/l/672850-sheep-in-space-commodore-64-manual.jpg)
